@@ -1,3 +1,5 @@
+# Simple Blog API
+
 ## Installation
 
 ```bash
