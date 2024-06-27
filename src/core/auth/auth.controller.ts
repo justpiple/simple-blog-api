@@ -1,6 +1,6 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
-import { ResponseTemplate } from 'src/utils/interceptors/transform.interceptor';
+import { ResponseTemplate } from '../../utils/interceptors/transform.interceptor';
 import { AllowAnon } from './auth.decorator';
 import { AuthService } from './auth.service';
 import SignInDto from './dto/signIn.dto';

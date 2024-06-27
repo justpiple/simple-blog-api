@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { PrismaService } from 'src/lib/prisma/prisma.service';
+import { PrismaService } from '../../lib/prisma/prisma.service';
 import { PostWithTagsAndAuthorType, PostWithTagsType } from './posts.types';
-import { PostWithTags, PostWithTagsAndAuthor } from 'src/utils/selector.utils';
-import { paginator } from 'src/lib/prisma/paginator';
+import {
+  PostWithTags,
+  PostWithTagsAndAuthor,
+} from '../../utils/selector.utils';
+import { paginator } from '../../lib/prisma/paginator';
 
 const paginate = paginator({ perPage: 10 });
 

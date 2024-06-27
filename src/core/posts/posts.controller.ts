@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -12,21 +13,16 @@ import {
   Query,
   UnauthorizedException,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiQuery,
-  ApiSecurity,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { Prisma, Post as PostModel } from '@prisma/client';
 import { PostWithTagsAndAuthorType } from './posts.types';
-import { ResponseTemplate } from 'src/utils/interceptors/transform.interceptor';
-import { PostWithTagsAndAuthor } from 'src/utils/selector.utils';
+import { ResponseTemplate } from '../../utils/interceptors/transform.interceptor';
+import { PostWithTagsAndAuthor } from '../../utils/selector.utils';
 import { AllowAnon, UseAuth } from '../auth/auth.decorator';
 import { UpdatePostDto } from './dto/updatePost.dto';
 import { PostsService } from './posts.service';
 import { UserWithoutPasswordType } from '../users/users.types';
-import { PaginatedResult } from 'src/lib/prisma/paginator';
+import { PaginatedResult } from '../../lib/prisma/paginator';
 
 @Controller('posts')
 export class PostsController {
@@ -71,23 +67,35 @@ export class PostsController {
     @UseAuth() user: UserWithoutPasswordType,
     @Body() data: UpdatePostDto,
   ) {
-    const postPostData = {
-      ...data,
-      authorId: user.id,
-    } as Prisma.PostUncheckedCreateInput;
+    try {
+      const postPostData = {
+        ...data,
+        authorId: user.id,
+      } as Prisma.PostUncheckedCreateInput;
 
-    if (data.tags) {
-      const mappingTags: Prisma.TagCreateOrConnectWithoutPostsInput[] =
-        data.tags.map((tag) => ({
-          where: { tagName: tag },
-          create: { tagName: tag },
-        }));
-      postPostData.tags = { connectOrCreate: mappingTags };
+      if (data.tags) {
+        const mappingTags: Prisma.TagCreateOrConnectWithoutPostsInput[] =
+          data.tags.map((tag) => ({
+            where: { tagName: tag },
+            create: { tagName: tag },
+          }));
+        postPostData.tags = { connectOrCreate: mappingTags };
+      }
+
+      return {
+        message: 'Post created successfully',
+        result: await this.postsService.createPost(postPostData),
+      };
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        if (e.code === 'P2002') {
+          throw new BadRequestException(
+            `${e?.meta?.target || 'Key'} already exists`,
+          );
+        }
+      }
+      throw e;
     }
-    return {
-      message: 'Post created successfully',
-      result: await this.postsService.createPost(postPostData),
-    };
   }
 
   @HttpCode(HttpStatus.OK)

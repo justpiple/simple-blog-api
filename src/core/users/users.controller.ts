@@ -13,14 +13,14 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { Prisma, User } from '@prisma/client';
 import { UserWithoutPasswordType } from './users.types';
-import { ResponseTemplate } from 'src/utils/interceptors/transform.interceptor';
-import { PostWithTags, UserWithoutPassword } from 'src/utils/selector.utils';
+import { ResponseTemplate } from '../../utils/interceptors/transform.interceptor';
+import { UserWithoutPassword } from '../../utils/selector.utils';
 import { AllowAnon, UseAuth } from '../auth/auth.decorator';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { UsersService } from './users.service';
-import { encryptData } from 'src/utils/encryption.utils';
+import { encryptData } from '../../utils/encryption.utils';
 import { PostWithTagsType } from '../posts/posts.types';
-import { PaginatedResult } from 'src/lib/prisma/paginator';
+import { PaginatedResult } from '../../lib/prisma/paginator';
 import { PostsService } from '../posts/posts.service';
 
 @Controller('users')

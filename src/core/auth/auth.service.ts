@@ -1,13 +1,12 @@
 import {
   ForbiddenException,
   Injectable,
-  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Prisma } from '@prisma/client';
-import { UsersService } from 'src/core/users/users.service';
-import { compareData, encryptData } from 'src/utils/encryption.utils';
+import { UsersService } from '../users/users.service';
+import { compareData, encryptData } from '../../utils/encryption.utils';
 import { UserWithoutPasswordType } from '../users/users.types';
 
 @Injectable()
