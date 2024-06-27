@@ -6,6 +6,10 @@
 $ npm install
 ```
 
+```bash
+$ npm run prisma
+```
+
 ## Running the app
 
 ```bash
@@ -22,14 +26,8 @@ $ npm run start:prod
 ## Test
 
 ```bash
-# unit tests
-$ npm run test
-
 # e2e tests
 $ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
 ---
@@ -52,3 +50,7 @@ Singleton Design Pattern bertujuan agar sebuah kelas hanya memiliki satu instanc
 
 - **Kontrol Akses Terpusat**: Memastikan hanya ada satu instance dari kelas tertentu, sehingga resource atau service dapat dikelola dengan lebih efektif.
 - **Penggunaan Memori Efisien**: Mengurangi penggunaan memori dengan memastikan bahwa hanya ada satu instance yang dibuat.
+
+```
+
+```
